@@ -8,14 +8,16 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const socketio = require('socket.io')(
-    server, {
-        cors:{
-            origin: "http://localhost:3000",
-            methods: ["GET", "POST"]
-        }
-    }
+    server
+    // setting cors origin option here would only be needed if the server was hosted on a seperate domain.
+    // , {
+    //     cors:{
+    //         origin: "http://localhost:3000",
+    //         methods: ["GET", "POST"]
+    //     }
+    // }
 );
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3001;
 
 
 // Set Express to handle data parsing
@@ -27,9 +29,7 @@ app.use(cors());
 // Set the static directory
 app.use('/',express.static(path.join(__dirname,'public')));
 
-socketio.on('connection', client=>{
-    console.log('client connected');
-})
+require('./connection/Connection')(socketio);
 
 server.listen(PORT, function() {
 console.log('App listening on PORT ' + PORT);
