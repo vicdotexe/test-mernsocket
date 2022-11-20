@@ -13,8 +13,6 @@ export class ChatBox extends Component{
     }
 
     
-    
-    
     onMessageReceived = (data) =>{
         this.messages.push(<ChatMessage messagedata={data}></ChatMessage>);
         this.forceUpdate();

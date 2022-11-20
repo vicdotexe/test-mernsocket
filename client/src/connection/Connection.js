@@ -3,11 +3,7 @@ import io from 'socket.io-client'
 class SocketConnection{
     constructor(){
 
-        // a hack to persist socket connection on page reload through local storage
-        const existing = JSON.parse(localStorage.getItem("userInfo"));
-        if (existing){
-            this.Connect(existing);
-        }
+        this.io = io();
     }
     /**
      * Connect client socket to server with associated unique user info
@@ -15,23 +11,15 @@ class SocketConnection{
      * @param {*} url optional: we could use this if the server was hosted on a seperate domain
      * todo: figure out if any more user info besides name and id in the database would be useful
      */
-    Connect(userInfo, url){
-        
-        // disconnect the previous socket connection if it exists (logging in as different user)
-        if (this.io && this.io.connected){
-            this.io.disconnect();
-        }
+    Login(userInfo, callback, url){
+        this.io.emit("login",userInfo)
+        callback();
+    }
 
-        this.io = io({
-            url: url,
-            auth: {
-                userInfo: userInfo
-            }
-        });
-        this.io.emit('connection');
-
-        // part of the sockit persitence hack
-        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    Logout(callback){
+        this.io.emit("logout");
+        console.log("loggedout");
+        callback();
     }
 
     /** Sends a message for the server to emit to the main lobby */

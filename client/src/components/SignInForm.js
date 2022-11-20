@@ -21,7 +21,7 @@ class SignInForm extends Component{
         this.setState(this.state);
     }
 
-    onSignIn = (e) => {
+    onSignIn = async(e) => {
         e.preventDefault();
 
         /*should make an api call to login to server and create a session.
@@ -32,14 +32,31 @@ class SignInForm extends Component{
         // connection.Connect(userInfo)
 
         //just going to fake it for now
+        const response = await fetch('/api/users/login', {
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password
+            })
+        })
+        console.log(response);
+        
+        if (!response.ok){
+            alert("invalid credentials");
+            return;
+        }
+        const data = await response.json();
+
+
         const userInfo = {
             username: this.state.username,
-            id: Math.floor(Math.random() * 10000)
+            id: data.id
         }
-        connection.Connect(userInfo);
-        setTimeout(() => {
-            this.props.navigate('/lobby')
-        }, 1000);
+
+        connection.Login(userInfo, ()=>this.props.navigate('/lobby'));
         
     }
 
