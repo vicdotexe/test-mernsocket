@@ -10,8 +10,8 @@ export default class ChatMessage extends Component{
         
         return (
             <div className="chatMessage">
-                <h3>User: {this.props.messagedata.username}</h3>
-                <h6>Message: {this.props.messagedata.message}</h6>
+                <h3>User: {this.props.messageData.username}</h3>
+                <h6>Message: {this.props.messageData.content}</h6>
             </div>
         )
     }

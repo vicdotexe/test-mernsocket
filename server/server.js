@@ -5,7 +5,7 @@ const sequelize = require('./config/connection');
 const session = require("express-session")
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const cors = require('cors');
-const connection = require('./connection/Connection')
+const connection = require('./lib/socket/ServerSocket')
 
 // Set up the Express App
 const app = express();

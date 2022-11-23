@@ -1,6 +1,6 @@
 import io from 'socket.io-client'
 
-class SocketConnection{
+class ClientSocket{
     constructor(){
 
         this.io = io();
@@ -19,7 +19,9 @@ class SocketConnection{
     Logout(callback){
         this.io.emit("logout");
         console.log("loggedout");
-        callback();
+        if (callback){
+            callback();
+        }
     }
 
     /** Sends a message for the server to emit to the main lobby */
@@ -84,6 +86,6 @@ class SocketConnection{
     }
 }
 
-const socketConnection = new SocketConnection();
+const socketConnection = new ClientSocket();
 
 export default socketConnection;

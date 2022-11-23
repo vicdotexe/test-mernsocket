@@ -1,5 +1,5 @@
 import { Component, useState } from "react"
-import Connection from '../../connection/Connection'
+import Connection from '../../utils/ClientSocket'
 
 export class MessageInput extends Component{
 

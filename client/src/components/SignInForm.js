@@ -1,5 +1,5 @@
 import { Component } from "react";
-import connection from "../connection/Connection";
+import connection from "../utils/ClientSocket";
 import {withRouter} from '../withRouter'
 
 class SignInForm extends Component{
@@ -53,7 +53,7 @@ class SignInForm extends Component{
 
         const userInfo = {
             username: this.state.username,
-            id: data.id
+            userId: data.id
         }
 
         connection.Login(userInfo, ()=>this.props.navigate('/lobby'));

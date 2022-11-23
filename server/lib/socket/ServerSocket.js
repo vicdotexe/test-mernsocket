@@ -1,9 +1,8 @@
-//const EventTypes = require('../connection/EventTypes')
-//const ChatTypes = require('../connection/ChatTypes')
-const {addUser, removeUser, getUserBySocketId, getUserByUserId} = require('../connection/Users')
-const sharedsession = require('express-socket.io-session')
+const {addUser, removeUser, getUserBySocketId, getUserByUserId} = require('./Users')
+const sharedsession = require('express-socket.io-session');
+const { Chat, Message } = require('../../models');
 
-const Connection = (http, session)=>{
+const ServerSocket = (http, session)=>{
 
     const server = require('socket.io')(
         http
@@ -27,7 +26,7 @@ const Connection = (http, session)=>{
         const userdata = {
             socketId: socket.id,
             username: "Guest",
-            userId: -1
+            userId: 1
         }
 
         if (socket.handshake.session.userdata){
@@ -69,20 +68,45 @@ const Connection = (http, session)=>{
 
 
         socket.on("chat", data=>{
-            const user = getUserBySocketId(socket.id);
+            const user = socket.handshake.session.userdata ? {
+                socketId:socket.id,
+                username:socket.handshake.session.userdata.username,
+                userId: socket.handshake.session.userdata.userId
+            } : {
+                socketId:socket.id,
+                username:"Guest",
+                userId:1
+            };
+
             switch(data.type){
+                
                 case "to_lobby":
                     //todo: push message to database (this way new sessions can query the db to sync chat history, maybe lobby has a limit and starts dropping old message)
+                    Chat.findOrCreate({
+                        where:{
+                            roomname:"lobby"
+                        }
+                        
+                    }).then(chat=>{
+                        Message.create({
+                            content:data.message,
+                            ChatId: chat[0].id,
+                            UserId: user.userId
+                        })
+                    })
                     // emit the message to entire server
                     data.type = "from_lobby";
                     data.username = user.username;
-                    server.emit("chat", data)
+                    data.content = data.message;
+                    server.emit("chat", data);
                     break;
+
                 case "to_user":
                     //todo: push message to data base (this way new sessions can query the db to sync chat history)
                     data.type = "from_user";
                     server.to(socket.id).to(getUserByUserId(data.toUserId).socketId).emit("chat", data);
                     break;
+
                 case "to_room":
                     // emit the message to everyone in the room
                     data.type = "from_room";
@@ -103,4 +127,4 @@ const Connection = (http, session)=>{
     })
 }
 
-module.exports = Connection
+module.exports = ServerSocket
