@@ -3,7 +3,7 @@
 Playground environment for messing with socket.io using the MERN stack.
 
 ## Goal
-Utilities to help streamline socket communication between front and back end, aswell as figuring out some sort of persistent session for socket connections. But mainly just to practice the flow of react<--->express.
+Utilities to help streamline socket communication between front and back end, aswell as figuring out some sort of persistent session for socket connections. But mainly just to practice the flow of react<--->express. Familiarizing myself the react-dnd library for drag and drop component functionality.
 
 ## Some details
 Express server backend and React app frontend are isolated into two directories (client and server) each with their own package.json
@@ -11,6 +11,9 @@ Express server backend and React app frontend are isolated into two directories 
 React app runs on port 3000 for development, and express server on port 3001... So in development, to simulate hosting a react build on the same port as the server I configured the react to proxy to port 3001 (look in the package.json in the client directory).. that takes care of any api calls to our own server without having to specify the different port in the fetch url during development.
 
 I was was testing with MySql since we hadn't learned about mongo yet... Just throw away concept models to give me something to work with.
+
+## Updates
+- Started playing around with react-dnd (drag and drop components)... set up temporary conceptual game-components to simulate a tripple triad game view, just to give me some context to work with while I try to familiarize myself with the react-dnd library. (I've commented out the chat/lobby routes in the main app and just rendering the new GameView component)
 
 ## Install
 To get it to work:
