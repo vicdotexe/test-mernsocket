@@ -21,12 +21,15 @@ export const Slot = (props)=>{
     const [{ isOver }, dropRef] = useDrop({
         accept: props.slotType == 'gridSlot' ? 'card' : 'none',
         drop: (item) => setBasket((basket) => {
-                                placeCard(<Card meta={item} unslot={()=>removeCard()}></Card>);
+                                placeCard(<Card meta={item} unslot={()=>removeCard()} state={
+                                    {inPlay:true}
+                                }></Card>);
                                 return !basket.includes(item) ? [...basket, item] : basket
                             }),
         collect: (monitor) => ({
-            isOver: monitor.isOver()
-        })
+            isOver: monitor.isOver() && card == undefined
+        }),
+        canDrop: ()=> card == undefined
     })
     
 

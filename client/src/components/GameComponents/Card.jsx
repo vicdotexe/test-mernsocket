@@ -3,6 +3,13 @@ import {useDrag} from 'react-dnd';
 
 export const Card = (props) =>{
     const meta = props.meta;
+    let startingState = props.state || {
+        inPlay:false,
+        ownedBy: null,
+        currentFaction: 0
+    }
+
+    const [state, setState] = useState(startingState);
 
     const [{isDragging}, dragRef] = useDrag(
         () => ({
@@ -15,7 +22,8 @@ export const Card = (props) =>{
             if (item && monitor.getDropResult()){
                 props.unslot();
             }
-          }
+          },
+          canDrag:()=>{return !state.inPlay}
         })
       )
 
