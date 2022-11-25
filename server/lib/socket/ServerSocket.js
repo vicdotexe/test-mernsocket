@@ -121,6 +121,10 @@ const ServerSocket = (http, session)=>{
         socket.on("join_room", data=>{
             
         })
+
+        socket.on("cardplaced", data=>{
+            server.emit('cardplaced', data);
+        })
         
 
 
