@@ -1,8 +1,12 @@
 import { useContext } from "react";
 import { createContext } from "react";
 import { Slot } from "./Slot";
+import { EventEmitter } from 'events';
+
+export const GridEmitter = new EventEmitter();
 
 export const Grid = ()=>{
+    
     const slots = []
 
     for (let i = 0; i < 9; i++){
