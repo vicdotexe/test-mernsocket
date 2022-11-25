@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { useDrop } from 'react-dnd';
 import {Card} from './Card'
 import socket from '../../utils/ClientSocket'
+import { GameState } from './GameField';
 
 const grid = [
     [0,1,2],
@@ -10,7 +11,7 @@ const grid = [
 ]
 
 export const Slot = (props)=>{
-
+    
     // temporary solution to pass starting card through props
     let startingCard = null;
     if (props.meta){
@@ -19,6 +20,7 @@ export const Slot = (props)=>{
 
     //set the card state of the slot (null if empty)
     const [card, setCard] = useState(startingCard);
+    const [faction, setFaction] = useState("blue");
 
     //basket and drop ref for drag and drop detection
     const [basket, setBasket] = useState([])
@@ -82,6 +84,21 @@ export const Slot = (props)=>{
         return false;
     }
 
+    function defend(fromCompass, side){
+        const myCompass = GameState.CheckIndex(props.slotIndex).compass;
+        switch(side){
+            case "left":
+                return myCompass[1] >= fromCompass[3]
+            case "right":
+                return myCompass[3] >= fromCompass[1]
+            case "bottom":
+                return myCompass[2] >= fromCompass[0]
+            case "top":
+                return myCompass[0] >= fromCompass[2]
+        }
+        console.log("something went wrong in defend")
+    }
+
     socket.GameLogic.OnCardPlaced((data)=>{
         const {gridIndex, cardData} = data;
         if (props.slotType != "gridSlot"){
@@ -92,29 +109,28 @@ export const Slot = (props)=>{
             setCard(
                 <Card meta={cardData} inPlay={true}></Card>
             )
+            console.log(GameState);
+            GameState.PlaceCard(props.slotIndex, cardData);
         }else if (card){
             const neighborLocation = isNeighbor(gridIndex);
             if (neighborLocation){
                 console.log(`slot ${props.slotIndex} touched on the ${neighborLocation} side`)
-                switch(neighborLocation){
-                    case "left":
-                        break;
-                    case "right":
-                        break;
-                    case "bottom":
-                        break;
-                    case "top":
-                        break;
+                const defended = defend(GameState.CheckIndex(gridIndex).compass, neighborLocation);
+                if (!defended){
+                    setFaction("red");
+                    console.log("faction change");
                 }
             }
         }
     })
 
+    
+
 
 
 
     return (
-        <div className={props.slotType} ref={dropRef} style={{background:isOver ? "yellow":"white"}}>
+        <div className={props.slotType} ref={dropRef} style={{background:card ?  (faction): (isOver ? "yellow":"white")}}>
             slot {props.slotIndex}
             {card}
         </div>

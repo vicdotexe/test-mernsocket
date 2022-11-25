@@ -25,6 +25,7 @@ export const Card = (props) =>{
     return (
         <div className="card" ref={dragRef} style={{background: isDragging ? 'orange' : 'green'}}>
             Card Name - {meta.name}
+            <p>{meta.compass}</p>
         </div>
     )
 }
