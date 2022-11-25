@@ -3,7 +3,6 @@ const sharedsession = require('express-socket.io-session');
 const { Chat, Message } = require('../../models');
 
 const ServerSocket = (http, session)=>{
-
     const server = require('socket.io')(
         http
         // setting cors origin option here would only be needed if the server was hosted on a seperate domain.
@@ -15,8 +14,6 @@ const ServerSocket = (http, session)=>{
         // }
     );
 
-    const userMap = new Map();
-    const socketMap = new Map();
 
     server.use(sharedsession(session));
 
@@ -61,9 +58,8 @@ const ServerSocket = (http, session)=>{
 
         
         socket.on("disconnect", (reason)=>{
-            const user = getUserBySocketId(socket.id);
-            removeUser(user.socketId);
-            console.log(`client: ${user.username} disconnected`);
+            //const user = getUserBySocketId(socket.id);
+            removeUser(socket.id);
         })
 
 
@@ -129,6 +125,10 @@ const ServerSocket = (http, session)=>{
 
 
     })
+
+    return {
+
+    }
 }
 
 module.exports = ServerSocket

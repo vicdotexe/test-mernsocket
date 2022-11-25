@@ -1,6 +1,7 @@
 const express = require('express');
 const { User } = require('../../models');
 const router = express.Router();
+const {getAllUsers} = require('../../lib/socket/Users')
 
 router.get('/', (req,res)=>{
 
@@ -40,5 +41,8 @@ router.post('/login', async(req,res)=>{
 
 })
 
+router.get('/sockets', async(req,res)=>{
+    return res.status(200).json(getAllUsers())
+})
 
 module.exports = router;

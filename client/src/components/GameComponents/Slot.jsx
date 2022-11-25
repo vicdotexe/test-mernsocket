@@ -99,6 +99,8 @@ export const Slot = (props)=>{
         console.log("something went wrong in defend")
     }
 
+    
+
     socket.GameLogic.OnCardPlaced((data)=>{
         const {gridIndex, cardData, cardFaction} = data;
         if (!cardFaction){

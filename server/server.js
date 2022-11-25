@@ -5,7 +5,7 @@ const sequelize = require('./config/connection');
 const session = require("express-session")
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const cors = require('cors');
-const connection = require('./lib/socket/ServerSocket')
+const ServerSocket = require('./lib/socket/ServerSocket')
 
 // Set up the Express App
 const app = express();
@@ -33,7 +33,8 @@ app.use(express.json());
 app.use(cors());
 
 //setup socketio
-connection(httpserver, mysession);
+const socket = ServerSocket(httpserver, mysession);
+app.locals.socket = socket;
 
 // Set the static directory
 app.use('/',express.static(path.join(__dirname,'public')));
