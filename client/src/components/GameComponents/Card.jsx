@@ -25,7 +25,12 @@ export const Card = (props) =>{
     return (
         <div className="card" ref={dragRef} style={{background: isDragging ? 'orange' : 'green'}}>
             Card Name - {meta.name}
-            <p>{meta.compass}</p>
+            <div className="compass">
+                <div>{meta.compass[0]}</div>
+                <div>{meta.compass[3]} {meta.compass[1]}</div>
+                <div>{meta.compass[2]}</div>
+            </div>
+            
         </div>
     )
 }

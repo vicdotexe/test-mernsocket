@@ -88,9 +88,9 @@ export const Slot = (props)=>{
         const myCompass = GameState.CheckIndex(props.slotIndex).compass;
         switch(side){
             case "left":
-                return myCompass[1] >= fromCompass[3]
-            case "right":
                 return myCompass[3] >= fromCompass[1]
+            case "right":
+                return myCompass[1] >= fromCompass[3]
             case "bottom":
                 return myCompass[2] >= fromCompass[0]
             case "top":
@@ -109,7 +109,6 @@ export const Slot = (props)=>{
             setCard(
                 <Card meta={cardData} inPlay={true}></Card>
             )
-            console.log(GameState);
             GameState.PlaceCard(props.slotIndex, cardData);
         }else if (card){
             const neighborLocation = isNeighbor(gridIndex);
@@ -118,10 +117,33 @@ export const Slot = (props)=>{
                 const defended = defend(GameState.CheckIndex(gridIndex).compass, neighborLocation);
                 if (!defended){
                     setFaction("red");
+                    GameState.EmitFactionChanged(props.slotIndex)
                     console.log("faction change");
                 }
             }
         }
+    })
+
+    GameState.OnFactionChanged((slotIndex)=>{
+        if (props.slotType != "gridSlot"){
+            return;
+        }
+        if (props.slotIndex == slotIndex){
+            return;
+        }else if (card){
+            const neighborLocation = isNeighbor(slotIndex);
+            if (neighborLocation){
+                console.log(`slot ${props.slotIndex} touched on the ${neighborLocation} side`)
+                const defended = defend(GameState.CheckIndex(slotIndex).compass, neighborLocation);
+                if (!defended){
+                    setFaction("orange");
+                    GameState.EmitFactionChanged(props.slotIndex)
+                    console.log(`chained from slot ${slotIndex} to slot ${props.slotIndex}`);
+                }
+            }
+        }
+
+
     })
 
     

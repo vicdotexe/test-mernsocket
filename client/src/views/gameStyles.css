@@ -41,3 +41,10 @@ border: 1px solid black;
     height:90%;
     border: 1px solid black;
 }
+
+.compass{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
