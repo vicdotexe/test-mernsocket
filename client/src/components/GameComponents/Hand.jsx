@@ -10,7 +10,7 @@ export const Hand = (props)=>{
         if (i < props.startingMeta.length){
             meta = props.startingMeta[i];
         }
-        const slot = <Slot meta={meta} slotType="handSlot" key={`slot-${i}`} id={i}></Slot>;
+        const slot = <Slot meta={meta} slotType="handSlot" key={`slot-${i}`} slotIndex={i}></Slot>;
         slots.push(slot);
     }
 

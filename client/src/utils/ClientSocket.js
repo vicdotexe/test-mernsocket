@@ -1,9 +1,28 @@
 import io from 'socket.io-client'
 
+class GameLogic{
+    constructor(io){
+        this.io = io;
+    }
+
+    PlaceCard(gridIndex, cardData){
+        this.io.emit('cardplaced', {gridIndex, cardData})
+    }
+
+    OnCardPlaced(callback){
+        this.io.on('cardplaced', data=>{
+            if (callback){
+                callback(data);
+            }
+        })
+    }
+}
+
 class ClientSocket{
     constructor(){
 
         this.io = io();
+        this.GameLogic = new GameLogic(this.io);
     }
     /**
      * Connect client socket to server with associated unique user info
