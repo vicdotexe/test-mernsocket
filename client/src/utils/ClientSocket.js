@@ -5,8 +5,8 @@ class GameLogic{
         this.io = io;
     }
 
-    PlaceCard(gridIndex, cardData){
-        this.io.emit('cardplaced', {gridIndex, cardData})
+    PlaceCard(gridIndex, cardData, cardFaction){
+        this.io.emit('cardplaced', {gridIndex, cardData, cardFaction})
     }
 
     OnCardPlaced(callback){

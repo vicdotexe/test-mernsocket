@@ -20,14 +20,14 @@ export const Slot = (props)=>{
 
     //set the card state of the slot (null if empty)
     const [card, setCard] = useState(startingCard);
-    const [faction, setFaction] = useState("blue");
+    const [faction, setFaction] = useState(GameState.GetMyColor());
 
     //basket and drop ref for drag and drop detection
     const [basket, setBasket] = useState([])
     const [{ isOver }, dropRef] = useDrop({
         accept: props.slotType == 'gridSlot' ? 'card' : 'none', //accept a drop type of 'card' if this is a 'gridSlot'
         drop: (item) => setBasket((basket) => {
-                                socket.GameLogic.PlaceCard(props.slotIndex, item) // emit the card placement to the server with the data of this slot index and the item (card meta)
+                                socket.GameLogic.PlaceCard(props.slotIndex, item, GameState.GetMyColor()) // emit the card placement to the server with the data of this slot index and the item (card meta)
                                 return !basket.includes(item) ? [...basket, item] : basket
                             }),
         collect: (monitor) => ({
@@ -100,7 +100,10 @@ export const Slot = (props)=>{
     }
 
     socket.GameLogic.OnCardPlaced((data)=>{
-        const {gridIndex, cardData} = data;
+        const {gridIndex, cardData, cardFaction} = data;
+        if (!cardFaction){
+            console.log("what's going on - oncardplaced null cardfaction")
+        }
         if (props.slotType != "gridSlot"){
             return;
         }
@@ -108,7 +111,9 @@ export const Slot = (props)=>{
         if (props.slotIndex == gridIndex){
             setCard(
                 <Card meta={cardData} inPlay={true}></Card>
+                
             )
+            setFaction(cardFaction)
             GameState.PlaceCard(props.slotIndex, cardData);
         }else if (card){
             const neighborLocation = isNeighbor(gridIndex);
@@ -116,28 +121,31 @@ export const Slot = (props)=>{
                 console.log(`slot ${props.slotIndex} touched on the ${neighborLocation} side`)
                 const defended = defend(GameState.CheckIndex(gridIndex).compass, neighborLocation);
                 if (!defended){
-                    setFaction("red");
-                    GameState.EmitFactionChanged(props.slotIndex)
+                    setFaction(cardFaction);
+                    GameState.EmitFactionChanged(props.slotIndex, cardFaction)
                     console.log("faction change");
                 }
             }
         }
     })
 
-    GameState.OnFactionChanged((slotIndex)=>{
+    GameState.OnFactionChanged((slotIndex, cardFaction)=>{
         if (props.slotType != "gridSlot"){
             return;
         }
         if (props.slotIndex == slotIndex){
             return;
         }else if (card){
+            if (!cardFaction){
+                console.log("what's going on - onfactionchanged null cardfaction")
+            }
             const neighborLocation = isNeighbor(slotIndex);
             if (neighborLocation){
                 console.log(`slot ${props.slotIndex} touched on the ${neighborLocation} side`)
                 const defended = defend(GameState.CheckIndex(slotIndex).compass, neighborLocation);
                 if (!defended){
-                    setFaction("orange");
-                    GameState.EmitFactionChanged(props.slotIndex)
+                    setFaction(cardFaction);
+                    GameState.EmitFactionChanged(props.slotIndex, cardFaction)
                     console.log(`chained from slot ${slotIndex} to slot ${props.slotIndex}`);
                 }
             }
