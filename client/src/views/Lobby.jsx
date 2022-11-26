@@ -1,11 +1,11 @@
 import {Component} from 'react';
 import ChatBox from '../components/Chat/ChatBox';
-import socketConnection from '../utils/ClientSocket';
+import socket from '../utils/ClientSocket';
 
 export default class Lobby extends Component{
     onLogout(e){
         e.preventDefault();
-        socketConnection.Logout();
+        socket.Authentication.Logout();
         alert("You're logged out and now considered a guest.")
     }
     render(){

@@ -10,6 +10,10 @@ const seed = async()=>{
         {
             username: 'Victor',
             password: 'password'
+        },
+        {
+            username: 'Bob',
+            password: 'password'
         }
     ], {
         individualHooks: true

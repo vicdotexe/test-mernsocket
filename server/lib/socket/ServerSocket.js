@@ -28,7 +28,7 @@ const ServerSocket = (http, session)=>{
 
         if (socket.handshake.session.userdata){
             userdata.username = socket.handshake.session.userdata.username;
-            userdata.userId = socket.handshake.session.userId;
+            userdata.userId = socket.handshake.session.userdata.userId;
         }
         addUser(userdata);
 
@@ -51,7 +51,7 @@ const ServerSocket = (http, session)=>{
                 socket.handshake.session.save();
             }
             const user = getUserBySocketId(socket.id);
-            user.userId = -1;
+            user.userId = 1;
             user.username = "Guest";
             console.log('user logged out');
         });   

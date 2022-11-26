@@ -1,13 +1,12 @@
 import React,{ Component } from 'react';
 import MessageInput from './MessageInput'
-import connection from '../../utils/ClientSocket';
+import socket from '../../utils/ClientSocket';
 import ChatMessage from './ChatMessage';
 
 export class ChatBox extends Component{
     constructor(){
         super();
-        console.log(connection);
-        connection.OnLobbyMessageRecieved(this.onMessageReceived);
+        socket.Chat.OnLobbyMessageRecieved(this.onMessageReceived);
         this.messages = [];
         //todo: get any messages from whatever chat is, from the data base, and sync the chat box by pushing to messages array
         this.syncMessages();
@@ -20,7 +19,6 @@ export class ChatBox extends Component{
                 return;
             }
             const data = await response.json();
-            console.log(data);
             this.messages = [];
             data.forEach(message=>{
                 this.messages.push(<ChatMessage messageData={message}></ChatMessage>)
@@ -33,7 +31,6 @@ export class ChatBox extends Component{
     }
     
     onMessageReceived = (data) =>{
-        console.log(data);
         this.messages.push(<ChatMessage messageData={data}></ChatMessage>);
         this.forceUpdate();
     }
