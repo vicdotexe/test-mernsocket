@@ -33,9 +33,9 @@ const gameManager = () =>{
 
     return {
         createGame(id){
-            const game = game(id);
-            games.set(id, game);
-            return game;
+            const newGame = game(id);
+            games.set(id, newGame);
+            return newGame;
         },
         getGame(id){
             return games.get(id);

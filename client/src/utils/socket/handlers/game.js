@@ -14,7 +14,7 @@ export const Game = (socket)=>{
         /** Connect the socket to a game with the specified id */
         Join(gameId){
             socket.off('gameAction');
-            socket.emit('join', gameId);
+            socket.emit('joinGame', gameId);
             id = gameId;
         },
         PickColor(color){
@@ -37,9 +37,12 @@ export const Game = (socket)=>{
             socket.emit('gameAction', {type: "placeCard", room: id, data:data})
         },
         OnCardPlaced(listener){
-            socket.on('placeCard', data=>{
+            socket.on('gameAction', data=>{
+                if (data.type != "placeCard"){
+                    return;
+                }
                 if (listener){
-                    listener(data);
+                    listener(data.data);
                 }
             })
         },

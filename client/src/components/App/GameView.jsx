@@ -3,6 +3,7 @@ import './gameStyles.css'
 import {LoremIpsum} from 'lorem-ipsum';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import socket from '../../utils/socket'
 
 const lorem = new LoremIpsum();
 const random = (max)=>{
@@ -10,7 +11,7 @@ const random = (max)=>{
 }
 export const GameView = (props) =>{
     
-    
+
     const startingMeta = [];
     for (let i = 0; i < 8; i++){
         const meta={
@@ -21,6 +22,7 @@ export const GameView = (props) =>{
     }
     return (
         <div className="gameView">
+            <p>{socket.Game.GetGameId()}</p>
             <DndProvider backend={HTML5Backend}>
                 <GameField startingMeta={startingMeta}/>
             </DndProvider>

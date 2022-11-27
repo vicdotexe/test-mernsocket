@@ -56,7 +56,8 @@ class SignInForm extends Component{
             userId: data.id
         }
 
-        connection.Authentication.Login(userInfo, ()=>this.props.navigate('/'));
+        connection.Authentication.Login(userInfo);
+        this.props.navigate('/lobby')
         
     }
 

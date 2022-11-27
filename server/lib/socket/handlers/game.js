@@ -13,10 +13,10 @@ module.exports = (io, socket) =>{
                 game.SetColor(user.username);
                 break;
             case "ready":
-                io.to(data.room).emit(data.type)
+                io.to(data.room).emit("gameAction", data)
                 break;
             case "placeCard":
-                io.to(data.room).emit(data.type, data.data);
+                io.to(data.room).emit("gameAction", data);
                 break;
             
         }
@@ -25,15 +25,16 @@ module.exports = (io, socket) =>{
     socket.on('createGame', data =>{
         const user = UserManager.getBySocketId(socket.id);
         const game = GameManager.createGame(data);
-
+        socket.join(game.GetId());
         game.AddPlayer(user.username);
     })
 
     socket.on('joinGame', data=>{
         const user = UserManager.getBySocketId(socket.id);
-        const game = GameManager.getGame(data.room);
+        const game = GameManager.getGame(data);
         if (game){
             game.AddPlayer(user.username)
+            socket.join(game.GetId());
         }
     })
 }
