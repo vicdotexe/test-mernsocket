@@ -3,16 +3,17 @@ const http = require('http');
 const path = require('path');
 const sequelize = require('./config/connection');
 const session = require("express-session")
+const sharedsession = require('express-socket.io-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const cors = require('cors');
-const ServerSocket = require('./lib/socket/ServerSocket')
 
-// Set up the Express App
+
+// Set up the Express app and server
 const app = express();
 const httpserver = http.createServer(app);
 const PORT = process.env.PORT || 3001;
 
-const mysession = session({
+const eSession = session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
@@ -24,7 +25,7 @@ const mysession = session({
     })
 });
 // Set Express to use sessions
-app.use(mysession)
+app.use(eSession)
 
 
 // Set Express to handle data parsing
@@ -33,8 +34,13 @@ app.use(express.json());
 app.use(cors());
 
 //setup socketio
-const socket = ServerSocket(httpserver, mysession);
-app.locals.socket = socket;
+const io = require('socket.io')(httpserver);
+io.use(sharedsession(eSession));
+
+const socketHandler = require('./lib/socket');
+io.on('connection', (socket)=>{
+    socketHandler(io, socket);
+});
 
 // Set the static directory
 app.use('/',express.static(path.join(__dirname,'public')));

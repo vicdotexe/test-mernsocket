@@ -1,7 +1,7 @@
 const express = require('express');
 const { User } = require('../../models');
 const router = express.Router();
-const {getAllUsers} = require('../../lib/socket/Users')
+const {getAllUsers} = require('../../lib/managers/UserManager')
 
 router.get('/', (req,res)=>{
 

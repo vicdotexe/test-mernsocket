@@ -1,6 +1,5 @@
 import { GameField } from "../GameComponents/GameField"
-import '../../views/gameStyles.css'
-import { Card } from "../GameComponents/Card";
+import './gameStyles.css'
 import {LoremIpsum} from 'lorem-ipsum';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -9,7 +8,8 @@ const lorem = new LoremIpsum();
 const random = (max)=>{
     return Math.floor((Math.random() * (max)) +1);
 }
-export const GameView = () =>{
+export const GameView = (props) =>{
+    
     
     const startingMeta = [];
     for (let i = 0; i < 8; i++){

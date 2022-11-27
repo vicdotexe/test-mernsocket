@@ -1,6 +1,6 @@
 import { Component } from "react";
-import connection from "../utils/ClientSocket";
-import {withRouter} from '../withRouter'
+import connection from "../utils/socket";
+import {withRouter} from '../utils/withRouter'
 
 class SignInForm extends Component{
 

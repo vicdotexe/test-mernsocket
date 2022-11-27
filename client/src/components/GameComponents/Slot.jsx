@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useDrop } from 'react-dnd';
 import {Card} from './Card'
-import socket from '../../utils/ClientSocket'
+import socket from '../../utils/socket'
 import { GameState } from './GameField';
 
 const grid = [

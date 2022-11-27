@@ -1,5 +1,5 @@
 import { Component, useState } from "react"
-import socket from '../../utils/ClientSocket'
+import socket from '../../utils/socket'
 
 export class MessageInput extends Component{
 
@@ -15,7 +15,7 @@ export class MessageInput extends Component{
 
     handleSend = (e) =>{
         e.preventDefault();
-        socket.Chat.SendLobbyMessage(this.state.msg);
+        socket.Lobby.SendMessage(this.state.msg);
         this.setState({msg:''});
     }
 

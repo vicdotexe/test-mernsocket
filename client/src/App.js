@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import { GameView } from './components/App/GameView';
-import SignIn from './views/SignIn'
-import Lobby from './views/Lobby'
+import SignIn from './components/App/SignIn'
+import Lobby from './components/App/Lobby'
 
 function App() {
 

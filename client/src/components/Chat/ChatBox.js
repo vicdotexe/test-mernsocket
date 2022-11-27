@@ -1,12 +1,12 @@
 import React,{ Component } from 'react';
 import MessageInput from './MessageInput'
-import socket from '../../utils/ClientSocket';
+import socket from '../../utils/socket';
 import ChatMessage from './ChatMessage';
 
 export class ChatBox extends Component{
     constructor(){
         super();
-        socket.Chat.OnLobbyMessageRecieved(this.onMessageReceived);
+        socket.Lobby.OnMessageRecieved(this.onMessageReceived);
         this.messages = [];
         //todo: get any messages from whatever chat is, from the data base, and sync the chat box by pushing to messages array
         this.syncMessages();
