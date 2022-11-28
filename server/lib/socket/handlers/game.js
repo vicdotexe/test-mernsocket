@@ -1,3 +1,4 @@
+const { default: Grid } = require('../../Game/Grid');
 const GameManager = require('../../managers/GameManager');
 const UserManager = require('../../managers/UserManager')
 
@@ -16,7 +17,22 @@ module.exports = (io, socket) =>{
                 io.to(data.room).emit("gameAction", data)
                 break;
             case "placeCard":
-                io.to(data.room).emit("gameAction", data);
+                const {meta, gridIndex, faction} = data.data;
+                const card = {
+                    name:meta.name,
+                    faction: faction,
+                    compass: meta.compass
+                }
+                const changes = game.Grid.PlaceCard(card, gridIndex);
+                io.to(data.room).emit("gameAction", {
+                    type: "placeCard",
+                    data:{
+                        meta: meta,
+                        gridIndex, gridIndex,
+                        faction: faction,
+                        changes: changes
+                    }
+                });
                 break;
             
         }

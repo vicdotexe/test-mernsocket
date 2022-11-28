@@ -11,7 +11,7 @@ const random = (max)=>{
 }
 export const GameView = (props) =>{
     
-
+    
     const startingMeta = [];
     for (let i = 0; i < 8; i++){
         const meta={

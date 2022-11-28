@@ -1,8 +1,11 @@
+const Grid = require('../Game/Grid');
+
 const game = (gameId) =>{
     const id = gameId;
     const players = [];
     const colors = ["blue", "red"];
     const ready = Array(2).fill(false);
+    const grid = new Grid();
 
     function getUserIndex(username){
         return username == players[0] ? 0 : 1;
@@ -24,7 +27,8 @@ const game = (gameId) =>{
         },
         GetId(){
             return id;
-        }
+        },
+        Grid: grid
     }
 }
 
