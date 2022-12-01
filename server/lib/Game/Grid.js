@@ -1,3 +1,5 @@
+const Card = require('./Card');
+
 const grid = [
     [0,1,2],
     [3,4,5],
@@ -5,8 +7,10 @@ const grid = [
 ]
 
 class Grid {
-    constructor(){
+    constructor(size = 3){
         this.slots = Array(9).fill(null);
+        //this.grid = Array(size).fill(Array(size).fill(null));
+        //this.size = size;
     }
 
     PlaceCard(card, index){
@@ -22,6 +26,9 @@ class Grid {
 
         for (let i = 0; i < closeEnemies.length; i++){
             const {card, defSide, index} = closeEnemies[i];
+            if (changes.some(change => change.index == index)){
+                continue;
+            }
             const defend = card.Defend(offensiveCard, defSide)
             if (!defend){
                 card.faction = offensiveCard.faction;
@@ -133,27 +140,6 @@ class Grid {
         return onlyEnemies;
     }
 
-}
-
-class Card {
-    constructor(name, compass, faction){
-        this.name = name;
-        this.compass = compass;
-        this.faction = faction;
-    }
-
-    Defend(card, fromSide){
-        switch(fromSide){
-            case "left":
-                return this.compass[3] >= card.compass[1]
-            case "right":
-                return this.compass[1] >= card.compass[3]
-            case "bottom":
-                return this.compass[2] >= card.compass[0]
-            case "top":
-                return this.compass[0] >= card.compass[2]
-        }
-    }
 }
 
 module.exports = Grid;

@@ -1,0 +1,68 @@
+maybe something like this?
+
+
+----------------------- The waiting area component to initialize the game  ------------------
+initializingView state:{
+    isReady:bool, //triggered on button click (if color is picked) -> emits to server that we are ready and sends color data
+    waiting:bool //waiting for another player to make a turn (probably can be used for both waiting for player to be ready and to take turn)
+    color/faction:string, //the color they picked
+}
+
+------------------------ Gamestate Data sent from server after each turn --------------------
+/** this is the data that the server will emit to the client after a card has been placed, retrieved with socket
+    with this we can 
+    - show the color-picker and ready button or the waiting visual, 
+    - determine if we render 'waiting' or enable dragging cards from your hand 
+    - process any of the 'changes' accordingly to trigger animations
+*/
+gamestate:{
+    initializing:bool, //true until server says both players clicked ready
+    active: bool, //true if game is initialized and turns are remaining
+
+    //if both initializing and active are false, then the game is over.
+
+    currentPlayersTurn : id?string?index?,
+    grid: array of {card}, // this is just a snapshot of everything after a card has been placed, post any battles (useful for reloads?)
+    changes: array of {changeData} // we will have to figure out what all we need to include in the 'changeData'
+}
+
+changeData:{
+    type: string // cardPlaced or cardFlipped (can't think of any others)
+    data: actionData // we will have to define the action data
+}
+
+actionData:{ //for card placed
+    index: number, //the location it was placed on the grid
+    card: cardData // we will have to define the cardData
+}
+
+actionData:{ //for card flipped
+    index: number, //the location of the defender
+    attackerIndex: number, //the location of the attacker
+    direction: string, //the direction it was attacked from... 
+    // with all 3 of these we can trigger the appropriate animations on both cards
+
+    color/faction: string //the new color/faction (send the data here so we don't have to traverse through the components to find it on the client side)
+}
+
+
+----------------------- Card Component ------------------------------------
+
+cardView state:{
+    inFight: bool, //true if it's one of the two cards going head to head... triggered by a socket event
+    offensive: bool, //true if card is offensive in the fight, false if defensive
+    opponentDirection:string // undefined unless inFight is true
+
+    //a combination of (inFight/offensive/opponentDirection) will determine an animation
+    //once the animation finishes, kick off the next one
+
+    color/faction: string, //which ever color the card is currently flipped to
+}
+
+cardView props:{
+    name:string,
+    compass:array of {number}, // [top,right,bottom,left]
+    owner:id?string?index?,
+    ranged: bool,
+    initialColor/Faction: string
+}

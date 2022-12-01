@@ -23,7 +23,11 @@ module.exports = (io, socket) =>{
                     faction: faction,
                     compass: meta.compass
                 }
+
+                
                 const changes = game.Grid.PlaceCard(card, gridIndex);
+
+
                 io.to(data.room).emit("gameAction", {
                     type: "placeCard",
                     data:{
