@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
+import { withRouter } from '../../utils/withRouter'
 import SignInForm from '../SignInForm'
+import socket from '../../utils/socket'
 
-export default class SignIn extends Component {
+class SignIn extends Component {
+  constructor(props){
+    super(props);
+    
+  }
   render() {
     return (
       <div>
@@ -12,3 +18,5 @@ export default class SignIn extends Component {
     )
   }
 }
+
+export default withRouter(SignIn);

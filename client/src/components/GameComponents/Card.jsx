@@ -10,8 +10,10 @@ export const Card = (props) =>{
           type: 'card',
           item:meta,
           collect: (monitor) => ({
+            
             isDragging: monitor.isDragging()
-          }),
+          }
+          ),
           end:(item, monitor) =>{
             if (item && monitor.getDropResult()){
                 props.unslot();

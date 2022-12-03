@@ -3,12 +3,27 @@ const Grid = require('./Grid')
 function Game(gameId){
     const id = gameId;
     const players = [];
-    const colors = ["blue", "red"];
-    const ready = Array(2).fill(false);
     const grid = new Grid();
 
     function getUserIndex(username){
         return username == players[0] ? 0 : 1;
+    }
+
+    function getPlayer(username){
+        return players[getUserIndex(username)];
+    }
+
+    function CreateState(changes){
+        return {
+            gameId: id,
+            players: players.map(player=>{return {
+                color: player.color,
+                ready: player.ready,
+                username: player.username
+            }}),
+            grid: grid.slots,
+            changes: changes
+        }
     }
     return {
         AddPlayer(username){
@@ -16,7 +31,7 @@ function Game(gameId){
         },
         SetColor(username, color){
             const index = getUserIndex(username);
-            colors[index] = color;
+            players[index].SetFaction(color);
         },
         SetReady(username){
             const index = getUserIndex(username);

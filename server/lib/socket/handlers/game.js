@@ -1,4 +1,3 @@
-const { default: Grid } = require('../../Game/Grid');
 const GameManager = require('../../managers/GameManager');
 const UserManager = require('../../managers/UserManager')
 
@@ -56,5 +55,9 @@ module.exports = (io, socket) =>{
             game.AddPlayer(user.username)
             socket.join(game.GetId());
         }
+    })
+
+    socket.on('disconnect', data=>{
+        
     })
 }

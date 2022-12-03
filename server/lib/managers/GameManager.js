@@ -1,10 +1,14 @@
+const Game = require('../Game/Game')
+
 const gameManager = () =>{
     const games = new Map();
 
     return {
         createGame(id){
-            const newGame = game(id);
+            const newGame = Game(id);
+
             games.set(id, newGame);
+            
             return newGame;
         },
         getGame(id){

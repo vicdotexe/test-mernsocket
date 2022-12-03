@@ -7,6 +7,7 @@ import Lobby from './components/App/Lobby'
 
 function App() {
 
+  
 
   return (
 
@@ -14,7 +15,6 @@ function App() {
         <div>
           
         <Routes>
-          
           <Route path="/" element={<SignIn></SignIn>}/>
           <Route path='/game' element={<GameView></GameView>}/>
           <Route path='/lobby' element={<Lobby></Lobby>}/>

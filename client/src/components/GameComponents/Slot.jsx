@@ -24,7 +24,9 @@ export const Slot = (props)=>{
 
     //basket and drop ref for drag and drop detection
     const [basket, setBasket] = useState([])
-    const [{ isOver }, dropRef] = useDrop({
+
+    const [{ isOver }, dropRef] = useDrop(
+        {
         accept: props.slotType == 'gridSlot' ? 'card' : 'none', //accept a drop type of 'card' if this is a 'gridSlot'
         drop: (item) => setBasket((basket) => {
                                 const data = {
@@ -37,10 +39,11 @@ export const Slot = (props)=>{
                             }),
         collect: (monitor) => ({
             isOver: monitor.isOver() && card == undefined // allow collection if hovering and no card exists in this slot
-        }),
+        }
+        
+        ),
         canDrop: ()=> card == undefined // allow drop if this slot doesn't already have a card
     })
-
 
 
     if (props.slotType == "gridSlot"){

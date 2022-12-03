@@ -9,8 +9,8 @@ const grid = [
 class Grid {
     constructor(size = 3){
         this.slots = Array(9).fill(null);
-        //this.grid = Array(size).fill(Array(size).fill(null));
-        //this.size = size;
+        // this.grid = Array(size).fill(Array(size).fill(null));
+        // this.size = size;
     }
 
     PlaceCard(card, index){
@@ -21,11 +21,15 @@ class Grid {
     }
 
     Battle(offensiveCard, offensiveIndex){
+
         const closeEnemies = this.FindEnemyNeighbors(offensiveIndex);
+
         let changes = [];
 
         for (let i = 0; i < closeEnemies.length; i++){
+
             const {card, defSide, index} = closeEnemies[i];
+
             if (changes.some(change => change.index == index)){
                 continue;
             }
@@ -34,7 +38,8 @@ class Grid {
                 card.faction = offensiveCard.faction;
                 changes.push({
                     index: index,
-                    toFaction: offensiveCard.faction
+                    toFaction: offensiveCard.faction,
+                    defSide: defSide
                 })
                 
                 const chain = this.Battle(card, index)
@@ -73,6 +78,7 @@ class Grid {
 
     FindEnemyNeighbors(index){
         const activeCard = this.slots[index];
+        
         const coords = this.GetCoordinates(index);
         console.log(coords);
         const neighbors = [];

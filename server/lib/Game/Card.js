@@ -6,9 +6,9 @@ class Card {
     }
 
     GetTop(){ return this.compass[0];}
-    GetRight(){return this.compass[0];}
-    GetBottom(){return this.compass[0];}
-    GetLeft(){return this.compass[0];}
+    GetRight(){return this.compass[1];}
+    GetBottom(){return this.compass[2];}
+    GetLeft(){return this.compass[3];}
 
     Defend(card, fromSide){
         switch(fromSide){
