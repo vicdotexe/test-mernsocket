@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import ChatBox from '../Chat/ChatBox';
+import ChatBox from '../Lobby/ChatBox';
 import socket from '../../utils/socket';
 import { withRouter } from '../../utils/withRouter';
 

@@ -3,6 +3,10 @@ import { useDrop } from 'react-dnd';
 import {Card} from './Card'
 import socket from '../../utils/socket'
 import { GameState } from './GameField';
+import { forwardRef } from 'react';
+import { useEffect } from 'react';
+import {motion} from 'framer-motion'
+
 
 const grid = [
     [0,1,2],
@@ -17,6 +21,15 @@ export const Slot = (props)=>{
     if (props.meta){
         startingCard = <Card meta={props.meta} unslot={()=>setCard(null)} currentSlot={props.id}/>
     }
+
+    useEffect(()=>{
+        if (props.battle == props.slotIndex){
+            setAnimation(testAnimation);
+            setTimeout(() => {
+                setAnimation({});
+            }, 500);
+        }
+    }, [props.battle])
 
     //set the card state of the slot (null if empty)
     const [card, setCard] = useState(startingCard);
@@ -75,10 +88,24 @@ export const Slot = (props)=>{
         })
     }
 
+    const [animation, setAnimation] = useState({});
+    const testAnimation = {
+        scale:[1,1.5,1],
+        transition:{
+            ease:"easeOut", 
+            duration:.5
+        }
+    }
+
     return (
-        <div className={props.slotType} ref={dropRef} style={{background:card ?  (faction): (isOver ? "yellow":"white")}}>
+        <motion.div 
+        animate={animation} 
+        className={props.slotType} 
+        ref={dropRef} 
+        style={{background:card ?  (faction): (isOver ? "yellow":"green")}}>
+            
             slot {props.slotIndex}
             {card}
-        </div>
+        </motion.div>
     )
 }
